@@ -17,13 +17,15 @@ const Todo = ({text, id, todos, todo, setTodos}) => {
         }));
     }
     return (
-        <div className="todo">
-            <li key={id} className={`todo-item ${todo.completed ? "completed" : ""}`} >{text}</li>
-            <button className='complete-btn' onClick={completeHandler}>
+        <div className="todo" >
+            <div className='todo-container' onClick={completeHandler}>
+            <button className={`todo-item ${todo.completed ? "completed" : "complete-btn"}`}>
                 <i className='fas fa-check'></i>
             </button>
+            <li key={id} className={`todo-item ${todo.completed ? "text-completed" : ""}`}>{text}</li>
+            </div>
             <button className='trash-btn' onClick={deleteHandler}>
-                <i className='fas fa-trash'></i>
+            <i class="fa fa-times" aria-hidden="true"></i>
             </button>
         </div>
 

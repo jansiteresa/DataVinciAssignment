@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import Form from './components/Form';
 import TodoList from './components/TodoList';
+import axios from "axios";
 
 function App() {
 
@@ -11,12 +12,15 @@ function App() {
   const [filteredTodos, setFilteredTodos] = useState([]);
 
   useEffect(() => {
-    getLocalTodos();
+    axios.get(`https://jsonplaceholder.typicode.com/users/1/todos`).then((res) =>{
+      const responseTodo = res.data;
+      setTodos(responseTodo);
+    });
   }, []);
+  console.log(todos);
 
   useEffect(() => {
     filterHandler();
-    saveLocalTodos();
   }, [todos, status]);
 
   const filterHandler = () => {
@@ -33,24 +37,16 @@ function App() {
     }
   };
 
-  const saveLocalTodos = () => {
-      localStorage.getItem('todos', JSON.stringify(todos));
-  };
-
-  const getLocalTodos = () => {
-    if( localStorage.getItem('todos') === null) {
-      localStorage.setItem('todos', JSON.stringify([]));
-    } else {
-      let todoLocal=JSON.parse(localStorage.getItem('todos'));
-      setTodos(todoLocal);
-    }
-  }
-
   return (
     <div>
      <header> 
-       <h1>Jansi's Todo List </h1>
+       <h1>Things to do </h1>
      </header>
+     <TodoList 
+     setTodos={setTodos} 
+     todos={todos}
+     filteredTodos= { filteredTodos}
+     />
      <Form 
      inputText={inputText} 
      todos={todos} 
@@ -58,11 +54,6 @@ function App() {
      setInputText={setInputText}
       setStatus= {setStatus}
       />
-     <TodoList 
-     setTodos={setTodos} 
-     todos={todos}
-     filteredTodos= { filteredTodos}
-     />
     </div>
   );
 }
